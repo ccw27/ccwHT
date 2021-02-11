@@ -1,0 +1,22 @@
+---
+# install nginx
+# For AWS Linux2, install nginx from the AWS "Extras Repository" with command 'amazon-linux-extras'
+# Since ansible module not available, creates arg. is the hack to make command task reasonably idempotent.
+- name: Install nginx
+  command: amazon-linux-extras install nginx1 -y
+  args:
+    creates: /sbin/nginx
+
+# setup Nginx config files
+- name: Create nginx config
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+  # trigger handler whenever config file changes
+  notify: restart nginx
+
+# set the home page
+- name: Set nginx home page
+  copy: src=index.html dest=/usr/share/nginx/html/index.html
+
+# start nginx
+- name: Start nginx
+  service: name=nginx state=started enabled=yes

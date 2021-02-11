@@ -1,0 +1,38 @@
+---
+# ssh
+- name: Allow new incoming SYN packets on TCP port 22 (SSH)
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 22
+    ctstate: NEW
+    syn: match
+    limit: 2/second
+    limit_burst: 2
+    jump: ACCEPT
+
+- name: Allow related and established connections on TCP port 22
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 22
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+
+# http
+- name: Allow new incoming http request on TCP port 80
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 80
+    ctstate: NEW
+    syn: match
+    jump: ACCEPT
+
+- name: Allow related and established connections on TCP port 80
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 80
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
