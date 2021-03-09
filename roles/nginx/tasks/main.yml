@@ -20,3 +20,15 @@
 # start nginx
 - name: Start nginx
   service: name=nginx state=started enabled=yes
+
+# verify web site
+- name: Verify web site
+  action: uri url=http://{{ item }} return_content=yes
+  loop: "{{ groups['ec2hosts'] }}"
+  register: webpage
+
+- name: fail with message
+  fail:
+    msg: 'service is not up'
+  when: "'New web site run by Nginx' not in item.content"
+  loop: "{{ webpage.results }}"
