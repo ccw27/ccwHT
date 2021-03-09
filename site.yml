@@ -1,6 +1,7 @@
 ---
 # 1. provision ec2 instance
 - hosts: localhost
+  connection: local
   gather_facts: False
 
   tasks:
@@ -27,9 +28,11 @@
         groups: ec2hosts
       loop: "{{ ec2.tagged_instances }}"
 
-    - name: Wait for instance ready (may need longer than 20s)
-      pause:
-        seconds: 20
+    - name: wait for instance(s) to come up
+      wait_for:
+        host: "{{ item }}"
+        port: 22
+      loop: "{{ groups['ec2hosts'] }}"
 
 # 2. config instance(s)
 - hosts: ec2hosts
