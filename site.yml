@@ -25,7 +25,7 @@
       add_host:
         hostname: "{{ item.public_ip }}"
         groups: ec2hosts
-      loop: "{{ ec2.instances }}"
+      loop: "{{ ec2.tagged_instances }}"
 
     - name: Wait for instance ready (may need longer than 20s)
       pause:
