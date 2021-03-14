@@ -3,7 +3,7 @@ This Ansible script will launch and configure a Nginx server(s) in AWS,
 you need an AWS account to run it.
 
 # Discussion
-Any comment please add a Pull Request or email ccwu27@gmail.com
+Any comment please add a Pull Request or email ccwu27(at)gmail.com
 
 # Require
 1. AWS account with Access Key ID, and Secret Access Key
