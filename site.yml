@@ -37,6 +37,9 @@
 # 2. config instance(s)
 - hosts: ec2hosts
   become: True
+  gather_facts: True
+  remote_user: "{{ remote_user }}"
+
   roles:
     # secure server
     - { role: iptables }
